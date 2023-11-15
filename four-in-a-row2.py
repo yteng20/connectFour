@@ -4,9 +4,9 @@ import numpy as np
 EMPTY = ' '
 PLAYER = '0'
 COMPUTER = 'X'
-ROW_COUNT = 6
-COLUMN_COUNT = 7
-WINDOW_LENGTH = 4
+ROW_COUNT = 4
+COLUMN_COUNT = 4
+WINDOW_LENGTH = 3
 
 
 def create_board():
@@ -62,8 +62,8 @@ def evaluate_window(window, piece):
     if piece == PLAYER:
         opponent_piece = COMPUTER
 
-    if np.count_nonzero(window == piece) == 4:
-        score += 100
+    if np.count_nonzero(window == piece) == WINDOW_LENGTH:
+        score += 1000
     elif np.count_nonzero(window == piece) == 3 and np.count_nonzero(window == EMPTY) == 1:
         score += 5
     elif np.count_nonzero(window == piece) == 2 and np.count_nonzero(window == EMPTY) == 2:
@@ -169,7 +169,7 @@ def play_game():
     while not game_over:
         # Player's turn
         if turn == 0:
-            col = int(input("Player, enter column (0-6): "))
+            col = int(input(f"Player, enter column (0-{COLUMN_COUNT - 1}): "))
             if is_valid_location(board, col):
                 drop_piece(board, col, PLAYER)
                 if winning_move(board, PLAYER):
@@ -181,7 +181,7 @@ def play_game():
 
         # Computer's turn
         else:
-            col, _ = alpha_beta_pruning(board, 7, -np.inf, np.inf, True)
+            col, _ = alpha_beta_pruning(board, 35, -np.inf, np.inf, True)
             if is_valid_location(board, col):
                 drop_piece(board, col, COMPUTER)
                 if winning_move(board, COMPUTER):
