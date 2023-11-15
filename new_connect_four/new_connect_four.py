@@ -171,7 +171,3 @@ if __name__ == "__main__":
 
     result = play_connect_n(rows, columns, window_size)
 
-    if result == 1:
-        print("You won!")
-    elif result == 0:
-        print("It's a draw!")
