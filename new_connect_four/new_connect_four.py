@@ -36,38 +36,48 @@ def undo_move(board, column):
 def evaluate_position(board, player, window_size):
     score = 0
 
+    def check_window(window):
+        nonlocal score
+        count_player = window.count(player)
+        count_opponent = window.count('X' if player == 'O' else 'O')
+
+        if count_player == window_size and count_opponent == 0:
+            score += 1
+        elif count_opponent == window_size and count_player == 0:
+            score -= 1
+
     # Check horizontally
     for row in range(len(board)):
         for col in range(len(board[0]) - window_size + 1):
             window = board[row][col:col + window_size]
-            score += evaluate_window(window, player)
+            check_window(window)
 
     # Check vertically
     for col in range(len(board[0])):
         for row in range(len(board) - window_size + 1):
             window = [board[row + i][col] for i in range(window_size)]
-            score += evaluate_window(window, player)
+            check_window(window)
 
     # Check diagonally (top-left to bottom-right)
     for row in range(len(board) - window_size + 1):
         for col in range(len(board[0]) - window_size + 1):
             window = [board[row + i][col + i] for i in range(window_size)]
-            score += evaluate_window(window, player)
+            check_window(window)
 
     # Check diagonally (bottom-left to top-right)
     for row in range(window_size - 1, len(board)):
         for col in range(len(board[0]) - window_size + 1):
             window = [board[row - i][col + i] for i in range(window_size)]
-            score += evaluate_window(window, player)
+            check_window(window)
 
     return score
 
 
 def evaluate_window(window, player):
     opponent = 'X' if player == 'O' else 'O'
-    if window.count(player) == len(window) and window.count(' ') == 0:
+    if window.count(player) == len(window) and ' ' not in window:
         return 1
-    elif window.count(opponent) == len(window) and window.count(' ') == 0:
+    elif window.count(opponent) == len(window) and ' ' not in window:
         return -1
     else:
         return 0
@@ -148,7 +158,7 @@ def play_connect_n(rows, columns, window_size):
                 print(f"Invalid column. Choose a column between 1 and {columns}.")
                 continue
         else:
-            print("AI is thinking...")
+            print("AI's turn")
             column = get_best_move(board, window_size)
             drop_disc(board, column, player)
 
@@ -167,7 +177,7 @@ def play_connect_n(rows, columns, window_size):
 if __name__ == "__main__":
     rows = int(input("Enter the number of rows: "))
     columns = int(input("Enter the number of columns: "))
-    window_size = int(input("Enter the window size (2 or 3): "))
+    window_size = int(input("Enter the window size: "))
 
     result = play_connect_n(rows, columns, window_size)
 
