@@ -117,7 +117,9 @@ def minimax(board, maximizing_player, max_player, min_player, window_size, depth
             eval = minimax(new_board, False, max_player, min_player, window_size, depth_count + 1)
             undo_move(board, col)
             max_eval = max(max_eval, eval)
+
         return max_eval
+
     else:   # minimizing player
         min_eval = math.inf
         for col in range(len(board[0])):
@@ -128,6 +130,7 @@ def minimax(board, maximizing_player, max_player, min_player, window_size, depth
             eval = minimax(new_board, True, max_player, min_player, window_size, depth_count + 1)
             undo_move(board, col)
             min_eval = min(min_eval, eval)
+
         return min_eval
 
 
