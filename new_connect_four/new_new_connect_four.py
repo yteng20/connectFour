@@ -86,12 +86,12 @@ def get_best_move(player, board, window_size):
                 if eval_val > max_eval:
                     max_eval = eval_val
                     best_move = col
-                print("  " + str(1000 - eval_val), end=' ')
+                print("  " + str(eval_val), end=' ')
             elif player == 'O':
                 if eval_val < min_eval:
                     min_eval = eval_val
                     best_move = col
-                print("  " + str(-1000 - eval_val), end=' ')
+                print("  " + str(eval_val), end=' ')
         else:
             print(" _ ", end=" ")
     print("")
@@ -151,7 +151,8 @@ def play_connect_n(rows, columns, window_size, turn_limit):
             print_board(board)
             column = get_best_move(player, board, window_size)
             board = drop_disc(board, column, player)
-        wait = input("Enter a key to continue:")
+        # Enable to wait for user input to output
+        #wait = input("Enter a key to continue:")
         if check_winner(board, player, window_size):
             print_board(board)
             print(f"Player {player} wins!")
