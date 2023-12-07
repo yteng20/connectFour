@@ -78,65 +78,54 @@ def get_best_move(player, board, window_size):
         if is_valid_move(board, col):
             new_board = drop_disc(board, col, player)
             if player == 'X':
-                eval_val = minimax(new_board, False, 'X', 'O', window_size)
+                eval_val = minimax(new_board, False, 'X', 'O', window_size, 0)
             else:
-                eval_val = minimax(new_board, True, 'X', 'O', window_size)
+                eval_val = minimax(new_board, True, 'X', 'O', window_size, 0)
             undo_move(board, col)
             if player == 'X':
                 if eval_val > max_eval:
                     max_eval = eval_val
                     best_move = col
+                print("  " + str(1000 - eval_val), end=' ')
             elif player == 'O':
                 if eval_val < min_eval:
                     min_eval = eval_val
                     best_move = col
-            print("  " + str(eval_val), end=' ')
+                print("  " + str(-1000 - eval_val), end=' ')
         else:
             print(" _ ", end=" ")
     print("")
     print("Player's value")
     return best_move
 
-def minimax(board, maximizing_player, max_player, min_player, window_size):
+def minimax(board, maximizing_player, max_player, min_player, window_size, depth_count):
     # check for termination
     if check_winner(board, max_player, window_size):    # X won
-        return 1
-        """
-        if maximizing_player:
-            return 1    # X won
-        else:
-            return -1   # O lost
-        """
+        return 1000 - depth_count
     elif check_winner(board, min_player, window_size):  # O won
-        return -1
-        """
-        if maximizing_player:
-            return -1   # X lost
-        else:
-            return 1    # O won
-        """
+        return -1000 + depth_count
     elif is_board_full(board):
         return 0    # Both draw
 
     if maximizing_player:
-        max_eval = -1
+        max_eval = -math.inf
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, max_player)
             else:
                 continue
-            eval = minimax(new_board, False, max_player, min_player, window_size)
+            eval = minimax(new_board, False, max_player, min_player, window_size, depth_count + 1)
             undo_move(board, col)
             max_eval = max(max_eval, eval)
         return max_eval
     else:   # minimizing player
-        min_eval = 1
+        min_eval = math.inf
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, min_player)
             else:
                 continue
-            eval = minimax(new_board, True, max_player, min_player, window_size)
+            eval = minimax(new_board, True, max_player, min_player, window_size, depth_count + 1)
             undo_move(board, col)
             min_eval = min(min_eval, eval)
         return min_eval
