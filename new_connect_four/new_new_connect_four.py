@@ -123,22 +123,24 @@ def minimax(board, maximizing_player, max_player, min_player, window_size):
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, max_player)
-            else:
-                continue
-            eval = minimax(new_board, False, max_player, min_player, window_size)
-            undo_move(board, col)
-            max_eval = max(max_eval, eval)
+                if check_winner(new_board, max_player, window_size):
+                    eval = 1000
+                else:
+                    eval = minimax(new_board, False, 'X', 'O', window_size)
+                undo_move(board, col)
+                max_eval = max(max_eval, eval)
         return max_eval
     else:   # minimizing player
         min_eval = 1
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, min_player)
-            else:
-                continue
-            eval = minimax(new_board, True, max_player, min_player, window_size)
-            undo_move(board, col)
-            min_eval = min(min_eval, eval)
+                if check_winner(new_board, max_player, window_size):
+                    eval = -1000
+                else:
+                    eval = minimax(new_board, True, 'X', 'O', window_size)
+                undo_move(board, col)
+                min_eval = min(min_eval, eval)
         return min_eval
 
 
