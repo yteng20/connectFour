@@ -73,7 +73,6 @@ def get_best_move(player, board, window_size):
     best_move = -1  # initialize
     max_eval = -math.inf
     min_eval = math.inf
-
     for col in range(len(board[0])):
         if is_valid_move(board, col):
             new_board = drop_disc(board, col, player)
@@ -86,16 +85,16 @@ def get_best_move(player, board, window_size):
                 if eval_val > max_eval:
                     max_eval = eval_val
                     best_move = col
-                print("  " + str(eval_val), end=' ')
+                print(" " + str(eval_val), end=' ')
             elif player == 'O':
                 if eval_val < min_eval:
                     min_eval = eval_val
                     best_move = col
-                print("  " + str(eval_val), end=' ')
+                print(" " + str(eval_val), end=' ')
         else:
             print(" _ ", end=" ")
     print("")
-    print("Player's value")
+    print("Player's value\n")
     return best_move
 
 def minimax(board, maximizing_player, max_player, min_player, window_size, depth_count):
@@ -159,7 +158,7 @@ def play_connect_n(rows, columns, window_size, turn_limit):
             return 1
         elif is_board_full(board):
             print_board(board)
-            print("It's a draw!")
+            print("Draw!")
             return 0
         else:
             player = switch_player(player)
@@ -172,8 +171,3 @@ if __name__ == "__main__":
     window_size = int(input("Enter the window size: "))
 
     result = play_connect_n(rows, columns, window_size, 200)
-
-    if result == 1:
-        print("You won!")
-    elif result == 0:
-        print("It's a draw!")
