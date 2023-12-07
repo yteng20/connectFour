@@ -125,6 +125,7 @@ def get_best_move(board, window_size):
             if eval_val > max_eval:
                 max_eval = eval_val
                 best_move = col
+
     return best_move
 
 

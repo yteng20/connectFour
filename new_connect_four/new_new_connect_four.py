@@ -78,9 +78,9 @@ def get_best_move(player, board, window_size):
         if is_valid_move(board, col):
             new_board = drop_disc(board, col, player)
             if player == 'X':
-                eval_val = minimax(new_board, True, 'X', 'O', window_size)
-            else:
                 eval_val = minimax(new_board, False, 'X', 'O', window_size)
+            else:
+                eval_val = minimax(new_board, True, 'X', 'O', window_size)
             undo_move(board, col)
             if player == 'X':
                 if eval_val > max_eval:
@@ -90,6 +90,11 @@ def get_best_move(player, board, window_size):
                 if eval_val < min_eval:
                     min_eval = eval_val
                     best_move = col
+            print("  " + str(eval_val), end=' ')
+        else:
+            print(" _ ", end=" ")
+    print("")
+    print("Player's value")
     return best_move
 
 def minimax(board, maximizing_player, max_player, min_player, window_size):
@@ -114,7 +119,7 @@ def minimax(board, maximizing_player, max_player, min_player, window_size):
         return 0    # Both draw
 
     if maximizing_player:
-        max_eval = float('-inf')
+        max_eval = -1
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, max_player)
@@ -125,7 +130,7 @@ def minimax(board, maximizing_player, max_player, min_player, window_size):
             max_eval = max(max_eval, eval)
         return max_eval
     else:   # minimizing player
-        min_eval = float('inf')
+        min_eval = 1
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, min_player)
@@ -142,14 +147,16 @@ def play_connect_n(rows, columns, window_size, turn_limit):
     player = 'X'
 
     while True:
-        print_board(board)
+
 
         if player == 'X':
             print("Player X's Turn")
+            print_board(board)
             column = get_best_move(player, board, window_size)
             board = drop_disc(board, column, player)
         else: # Player is O
             print("Player O's Turn")
+            print_board(board)
             column = get_best_move(player, board, window_size)
             board = drop_disc(board, column, player)
         wait = input("Enter a key to continue:")
