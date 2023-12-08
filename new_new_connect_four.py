@@ -115,12 +115,15 @@ def minimax(board, maximizing_player, max_player, min_player, window_size, depth
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, max_player)
+            else:
+                continue
             eval = minimax(new_board, False, max_player, min_player, window_size, depth_count + 1, alpha, beta)
             undo_move(board, col)
             max_eval = max(max_eval, eval)
             alpha = max(alpha, eval)
             if beta <= alpha:
                 break
+
         return max_eval
 
     else:   # minimizing player
@@ -128,12 +131,15 @@ def minimax(board, maximizing_player, max_player, min_player, window_size, depth
         for col in range(len(board[0])):
             if is_valid_move(board, col):
                 new_board = drop_disc(board, col, min_player)
+            else:
+                continue
             eval = minimax(new_board, True, max_player, min_player, window_size, depth_count + 1, alpha, beta)
             undo_move(board, col)
             min_eval = min(min_eval, eval)
             beta = min(beta, eval)
             if beta <= alpha:
                 break
+
         return min_eval
 
 
